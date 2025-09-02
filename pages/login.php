@@ -1,12 +1,14 @@
 <?php
 session_start();
 require_once "../config/api.php"; // fungsi callAPI()
+require_once "../config/api_url.php";
 $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email    = trim($_POST['email']);
     $password = trim($_POST['password']);
     if ($email && $password) {
-        $response = callAPI("POST", "https://mokkoproject.biz.id/Mokko_Businness/src/api/login.php", [
+        $url = getApiUrl('login.php');
+        $response = callAPI("POST", $url, [
             "Email"    => $email,
             "Password" => $password
         ]);

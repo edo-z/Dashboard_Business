@@ -3,7 +3,7 @@ header("Content-Type: application/json");
 
 require_once "../config/security.php";
 require_once "../config/db.php";
-require "vendor/autoload.php"; // JWT
+require_once __DIR__ . '/../../vendor/autoload.php'; // JWT
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;

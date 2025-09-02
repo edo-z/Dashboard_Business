@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "../config/api.php"; // fungsi callAPI()
+require_once "../config/api_url.php"; // URL API register
 $error = "";
 $success = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -8,7 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email    = trim($_POST['email']);
     $password = trim($_POST['password']);
     if ($name && $email && $password) {
-        $response = callAPI("POST", "https://mokkoproject.biz.id/Mokko_Businness/src/api/register.php", [
+        $url = getApiUrl('register.php');
+        $response = callAPI("POST", $url, [
             "Name"     => $name,
             "Email"    => $email,
             "Password" => $password
@@ -25,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -94,15 +97,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
+                            '0%': {
+                                opacity: '0'
+                            },
+                            '100%': {
+                                opacity: '1'
+                            },
                         },
                         slideUp: {
-                            '0%': { 
+                            '0%': {
                                 opacity: '0',
                                 transform: 'translateY(20px)'
                             },
-                            '100%': { 
+                            '100%': {
                                 opacity: '1',
                                 transform: 'translateY(0)'
                             }
@@ -114,101 +121,102 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
+
         body {
             font-family: 'Inter', sans-serif;
         }
-        
+
         .minimal-bg {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         }
-        
+
         .form-container {
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
         }
-        
+
         .input-field {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        
+
         .input-field:focus {
             border-color: #5B91D1;
             box-shadow: 0 0 0 3px rgba(91, 145, 209, 0.1);
             transform: translateY(-1px);
         }
-        
+
         .btn-primary {
             background: #5B91D1;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
         }
-        
+
         .btn-primary:hover {
             background: #5592D6;
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(91, 145, 209, 0.2);
         }
-        
+
         .btn-primary:active {
             transform: translateY(0);
         }
-        
+
         .logo-accent {
             color: #5B91D1;
             transition: all 0.3s ease;
         }
-        
+
         .logo-accent:hover {
             color: #5592D6;
         }
-        
+
         .error-box {
             animation: slideIn 0.3s ease-out;
         }
-        
+
         .success-box {
             animation: slideIn 0.3s ease-out;
         }
-        
+
         @keyframes slideIn {
             from {
                 opacity: 0;
                 transform: translateX(-10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
             }
         }
-        
+
         .form-label {
             color: #6c757d;
             font-weight: 500;
             font-size: 0.875rem;
             letter-spacing: 0.025em;
         }
-        
+
         .link-primary {
             color: #5B91D1;
             font-weight: 500;
             transition: all 0.2s ease;
         }
-        
+
         .link-primary:hover {
             color: #5592D6;
         }
-        
+
         .divider {
             background: linear-gradient(to right, transparent, #e9ecef, transparent);
         }
-        
+
         .subtle-shadow {
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
         }
-        
+
         /* Loading spinner */
         .spinner {
             display: inline-block;
@@ -219,33 +227,36 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             border-top-color: white;
             animation: spin 0.8s ease-in-out infinite;
         }
-        
+
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
-        
+
         /* Focus states */
         .input-wrapper:focus-within .input-icon {
             color: #5B91D1;
         }
-        
+
         /* Background pattern */
         .bg-pattern {
-            background-image: 
+            background-image:
                 radial-gradient(circle at 25% 25%, rgba(139, 180, 228, 0.05) 0%, transparent 50%),
                 radial-gradient(circle at 75% 75%, rgba(91, 145, 209, 0.05) 0%, transparent 50%);
         }
-        
+
         /* Form transitions */
         .form-group {
             transition: all 0.3s ease;
         }
-        
+
         .form-group:focus-within {
             transform: translateY(-2px);
         }
     </style>
 </head>
+
 <body class="minimal-bg min-h-screen flex items-center justify-center p-4 bg-pattern">
     <!-- Main Container -->
     <div class="w-full max-w-sm" data-aos="fade-up">
@@ -259,7 +270,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 <h1 class="text-2xl font-semibold text-gray-900">Buat Akun</h1>
                 <p class="text-sm text-gray-600 mt-1">Daftar untuk mengakses Mokko Project</p>
             </div>
-            
+
             <!-- Error Message -->
             <?php if ($error): ?>
                 <div class="mb-6 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm error-box">
@@ -269,7 +280,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
                 </div>
             <?php endif; ?>
-            
+
             <!-- Success Message -->
             <?php if ($success): ?>
                 <div class="mb-6 p-3 bg-green-50 border border-green-200 text-green-700 rounded-lg text-sm success-box">
@@ -293,15 +304,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <i class="text-gray-400 fas fa-user input-icon"></i>
                             </div>
-                            <input type="text" 
-                                   name="name" 
-                                   id="name" 
-                                   required
-                                   class="input-field w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none"
-                                   placeholder="John Doe">
+                            <input type="text"
+                                name="name"
+                                id="name"
+                                required
+                                class="input-field w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none"
+                                placeholder="John Doe">
                         </div>
                     </div>
-                    
+
                     <!-- Email Field -->
                     <div class="form-group input-wrapper">
                         <label for="email" class="block form-label mb-2">Email</label>
@@ -309,15 +320,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <i class="text-gray-400 fas fa-envelope input-icon"></i>
                             </div>
-                            <input type="email" 
-                                   name="email" 
-                                   id="email" 
-                                   required
-                                   class="input-field w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none"
-                                   placeholder="nama@email.com">
+                            <input type="email"
+                                name="email"
+                                id="email"
+                                required
+                                class="input-field w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none"
+                                placeholder="nama@email.com">
                         </div>
                     </div>
-                    
+
                     <!-- Password Field -->
                     <div class="form-group input-wrapper">
                         <label for="password" class="block form-label mb-2">Password</label>
@@ -325,42 +336,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                 <i class="text-gray-400 fas fa-lock input-icon"></i>
                             </div>
-                            <input type="password" 
-                                   name="password" 
-                                   id="password" 
-                                   required
-                                   class="input-field w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none"
-                                   placeholder="••••••••">
+                            <input type="password"
+                                name="password"
+                                id="password"
+                                required
+                                class="input-field w-full pl-10 pr-3 py-3 border border-gray-200 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none"
+                                placeholder="••••••••">
                         </div>
                     </div>
-                    
+
                     <!-- Submit Button -->
-                    <button type="submit" 
-                            id="submitBtn"
-                            class="btn-primary w-full py-3 px-4 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-un-blue-2">
+                    <button type="submit"
+                        id="submitBtn"
+                        class="btn-primary w-full py-3 px-4 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-un-blue-2">
                         <span id="btnText">Daftar</span>
                         <span id="btnLoader" class="hidden">
                             <span class="spinner"></span>
                         </span>
                     </button>
                 </form>
-                
+
                 <!-- Divider -->
                 <div class="my-6">
                     <div class="divider h-px w-full"></div>
                 </div>
-                
+
                 <!-- Login Link -->
                 <div class="text-center">
                     <p class="text-sm text-gray-600">
-                        Sudah punya akun? 
+                        Sudah punya akun?
                         <a href="login.php" class="link-primary hover:underline">
                             Masuk
                         </a>
                     </p>
                 </div>
             <?php endif; ?>
-            
+
             <!-- Brand Footer -->
             <div class="mt-8 pt-6 border-t border-gray-100 text-center">
                 <div class="flex items-center justify-center space-x-2 mb-2">
@@ -371,7 +382,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         </div>
     </div>
-    
+
     <script>
         // Initialize AOS
         AOS.init({
@@ -379,37 +390,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             once: true,
             offset: 50
         });
-        
+
         // Form submission handling
         const registerForm = document.getElementById('registerForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
         const btnLoader = document.getElementById('btnLoader');
-        
+
         if (registerForm) {
             registerForm.addEventListener('submit', function(e) {
                 // Show loading state
                 btnText.style.display = 'none';
                 btnLoader.style.display = 'inline-block';
                 submitBtn.disabled = true;
-                
+
                 // Prevent multiple submissions
                 submitBtn.style.cursor = 'not-allowed';
             });
         }
-        
+
         // Add subtle animations to inputs
         const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
         inputs.forEach(input => {
             input.addEventListener('focus', function() {
                 this.parentElement.parentElement.classList.add('scale-[1.02]');
             });
-            
+
             input.addEventListener('blur', function() {
                 this.parentElement.parentElement.classList.remove('scale-[1.02]');
             });
         });
-        
+
         // Smooth page transitions
         document.addEventListener('DOMContentLoaded', function() {
             document.body.style.opacity = '0';
@@ -418,7 +429,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 document.body.style.opacity = '1';
             }, 100);
         });
-        
+
         // Add keyboard navigation
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Enter' && e.target.tagName === 'INPUT') {
@@ -430,4 +441,5 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         });
     </script>
 </body>
+
 </html>

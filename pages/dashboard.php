@@ -1,5 +1,6 @@
 <?php
 require_once "auth.php"; // validasi JWT
+require_once "../config/api_url.php";
 $user = $_SESSION['user'];
 $username = $user['name'];
 $role     = $user['role'];
@@ -447,8 +448,8 @@ $apiKey  = "1ee34e9824617bb465cc92c7ccdcdb04ad2303f16560b8ee68cf0609517cbafd5182
   </div>
   <script>
     const jwt = "<?= $jwt ?>";
-    const apiKey = "<?= $apiKey ?>";
-    const baseUrl = "http://mokkoproject.biz.id/Mokko_Businness/src/api"; // Diubah ke HTTPS
+  const apiKey = "<?= $apiKey ?>";
+  const baseUrl = <?= json_encode(getBaseApiUrl()) ?>; // berasal dari config/api_url.php
     const user = <?= json_encode($user) ?>;
     const role = "<?= $role ?>";
 

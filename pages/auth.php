@@ -1,6 +1,6 @@
 <?php
 session_start();
-require "vendor/autoload.php"; // pastikan path benar
+require_once __DIR__ . '/../vendor/autoload.php'; // pastikan path benar
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
